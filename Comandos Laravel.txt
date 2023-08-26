@@ -21,3 +21,6 @@ Ejecutar migraciones
   php artisan migrate:rollback        Rollback the last database migration
   php artisan migrate:status          Show the status of each migration
 
+Crear un Modelo
+
+php artisan make:model NombreModelo

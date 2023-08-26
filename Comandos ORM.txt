@@ -8,7 +8,10 @@ $user->save();
 
 READ
 +++++++++++++++++++++++++++
-$users = User::all();
+$users = User::all(); // Obtiene todos los registros
+$user = User::find(1); // Obtiene un registro en especifico
+$users = User::find([1,2,3]); // Obtiene varios registros indicando su indicando
+$count = User::count(); // Cantidad de registros
 
 UPDATE
 +++++++++++++++++++++++++++
