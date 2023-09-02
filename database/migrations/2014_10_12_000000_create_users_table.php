@@ -22,7 +22,9 @@ return new class extends Migration
 
             // Foreign Keys
             $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('role_id')->references('id')->on('roles')
+                                                        ->onUpdate('cascade')
+                                                        ->onDelete('cascade');
 
 
             $table->rememberToken();
