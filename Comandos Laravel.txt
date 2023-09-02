@@ -35,3 +35,8 @@ Ejecutar Seeders
 
 php artisan db:seed
 php artisan migrate:fresh --seed
+
+
+Creación Factories
+
+php artisan make:factory UserFactory --model=User
