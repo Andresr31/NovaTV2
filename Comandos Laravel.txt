@@ -38,5 +38,28 @@ php artisan migrate:fresh --seed
 
 
 Creación Factories
-
 php artisan make:factory UserFactory --model=User
+
+Creación de Key
+php artisan key:generate
+
+Levantar servidor local
+php artisan serve
+
+Eliminar caché
+php artisan optimize
+
+Crear Controlador
+php artisan make:controller TestController
+php artisan make:controller UserController --resource
+
+Instalación Laravel Mixin
+
+composer require laravel/ui
+npm install & npm run dev
+php artisan ui bootstrap
+php artisan ui bootstrap --auth
+npm run dev
+npm run watch
+
+
