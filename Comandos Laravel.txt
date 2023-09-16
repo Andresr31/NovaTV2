@@ -57,9 +57,16 @@ Instalación Laravel Mixin
 
 composer require laravel/ui
 npm install & npm run dev
-php artisan ui bootstrap
 php artisan ui bootstrap --auth
+php artisan ui bootstrap
 npm run dev
 npm run watch
+
+Rutas
+
+php artisan route:list
+php artisan r:l
+php artisan route:clear
+php artisan route:cache
 
 
