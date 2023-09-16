@@ -70,3 +70,13 @@ php artisan route:clear
 php artisan route:cache
 
 
+Reestablecer proyecto
+
+git clone git@github.com:Andresr31/NovaTV2.git
+composer install
+npm install
+cp .env.example .env -> Luego configurar variables de entorno
+php artisan key:generate
+php artisan migrate
+npm run dev
+
