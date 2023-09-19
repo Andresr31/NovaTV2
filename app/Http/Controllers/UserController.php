@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+       $this->middleware('auth'); 
+    }
     /**
      * Obtener todos los elementos y retornar la vista para su visualización
      * GET
      */
     public function index()
     {
-        $users = User::all();
-        dd($users);
+        // $users = User::all();
+        $users = User::paginate(10);
+        return view('elements.users.index')->with('users',$users);
     }
 
     /**
@@ -25,8 +31,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        dd($roles);
-        //return view('elements.users.create')->with('roles',$roles);
+        return view('elements.users.create')->with('roles',$roles);
 
     }
 
@@ -34,19 +39,24 @@ class UserController extends Controller
      * Recibir solicitud del formulario de creación del elemento y creación del registro
      * POST
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $user = new User;
 
         $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        // $user->photo Código para subir foto
+        if ($request->hasFile('photo')) {
+            $file = time().'.'.$request->photo->extension();
+            $request->photo->move(public_path('images/uploads'),$file);
+            $user->photo = 'images/uploads/'.$file;
+        }
+        
         $user->password = bcrypt($request->password);
         $user->role_id = $request->role_id;
 
         if($user->save()){
-            //Redireccionar a la vista index
+            return redirect('users')->with('message','El usuario: '.$user->fullname.' ha sido creado existosamente!!');
         }
 
 
@@ -59,7 +69,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
-        dd($user);
+        return view('elements.users.show')->with('user',$user);
     }
 
     /**
@@ -69,7 +79,8 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::find($id);
-        dd($user);
+        $roles = Role::all();
+        return view('elements.users.edit')->with('user',$user)->with('roles',$roles);
     }
 
     /**
@@ -83,12 +94,17 @@ class UserController extends Controller
         $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        // $user->photo Código para subir foto
+        if ($request->hasFile('photo')) {
+            $file = time().'.'.$request->photo->extension();
+            $request->photo->move(public_path('images/uploads'),$file);
+            $user->photo = 'images/uploads/'.$file;
+        }
+        
         $user->password = bcrypt($request->password);
         $user->role_id = $request->role_id;
 
         if($user->save()){
-            //Redireccionar a la vista index
+            return redirect('users')->with('message','El usuario: '.$user->fullname.' ha sido actualizado existosamente!!');
         }
     }
 
@@ -96,9 +112,16 @@ class UserController extends Controller
      * Eliminar un registro
      * DELETE
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
-        $user->delete();
+        $file = public_path().'/'.$user->photo;
+        if (!str_contains($user->photo, 'https') && getimagesize($file) && $user->photo != 'images/no-profile.png') {
+            unlink($file);
+        }
+
+        if($user->delete()){
+            return redirect('users')->with('message','El usuario: '.$user->fullname.' ha sido eliminado existosamente!!');
+        }
+
     }
 }
