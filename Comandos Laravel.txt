@@ -80,3 +80,7 @@ php artisan key:generate
 php artisan migrate
 npm run dev
 
+Request
+
+php artisan make:request NombreRequest
+
