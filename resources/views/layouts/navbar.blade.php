@@ -41,9 +41,26 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            @if (Auth::user()->role->name == 'Admin')
+                                <a href="{{ url('users') }}" class="dropdown-item">
+                                    <i class="fa fa-users"></i>
+                                    Módulo Usuarios
+                                </a>
+                                <a href="{{ url('categories') }}" class="dropdown-item">
+                                    <i class="fa fa-list-alt"></i>
+                                    Módulo Categorias
+                                </a>
+                                <a href="{{ url('movies') }}" class="dropdown-item">
+                                    <i class="fa fa-film"></i>
+                                    Módulo Peliculas
+                                </a>
+                                
+                            @endif
+                            
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
+                                <i class="fa-solid fa-right-from-bracket"></i>
                                 Cerrar sesión
                             </a>
 
