@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\User;
 use App\Models\Category;
-
+use Exception;
 use Illuminate\Http\Request;
 
 class MovieController extends Controller
@@ -122,7 +122,9 @@ class MovieController extends Controller
 
         $movie->name = $request->name;
         $movie->description = $request->description;
+        
         $movie->quality = $request->quality;
+
         if($request->hasFile('image')){
             $file = time().'.'.$request->image->extension();
             $request->image->move(public_path('images/movies/'), $file);
@@ -136,10 +138,14 @@ class MovieController extends Controller
         $movie->language = $request->language;
         $movie->user_id = $request->user_id;
         $movie->category_id = $request->category_id;
-        
-        if($movie->save()){
-            return redirect('movies')->with('message', 'La pelicula: '.$movie->name.' fue actualizada con éxito!!');
+        try {
+            if($movie->save()){
+                return redirect('movies')->with('message', 'La pelicula: '.$movie->name.' fue actualizada con éxito!!');
+            }
+        } catch (Exception $e) {
+            return back()->with('error','Por favor complete todos los campos');
         }
+        
 
     }
 
