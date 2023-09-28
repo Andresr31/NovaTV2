@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', [App\Http\Controllers\HomeController::class, 'welcome'])->name('welcome');
 Route::get('/test/{name}',[App\Http\Controllers\TestController::class,'test']);
 Route::get('/user/{id}',[App\Http\Controllers\TestController::class,'findUser']);
 
@@ -33,3 +33,6 @@ Route::resources([
     'categories' => CategoryController::class,
     'movies' => MovieController::class
 ]);
+
+// Filter
+Route::post('category/filter', [App\Http\Controllers\HomeController::class, 'filter'])->name('filter');
